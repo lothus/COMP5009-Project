@@ -90,6 +90,7 @@ class TCAV(object):
     class_id = mymodel.label_to_id(target_class)
     if run_parallel:
       pool = multiprocessing.Pool(num_workers)
+      #Calculation of the paper for summative
       directions = pool.map(
           lambda i: TCAV.get_direction_dir_sign(
               mymodel, np.expand_dims(class_acts[i], 0),
