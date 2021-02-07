@@ -1,0 +1,9 @@
+version: '3'
+services:
+ env:
+  build: .
+  user: '1000:1000'
+  networks:
+    - default
+  volumes: 
+    - /home/lothus/dockerfiles/python/tcav/Code:/code
