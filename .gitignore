@@ -1,0 +1,9 @@
+*.pyc
+/dist/
+/*.egg-info
+.ipynb_checkpoints/
+build/
+Code/inception*/
+Code/mobilenet*/
+Code/broden1_224/
+.vscode/
