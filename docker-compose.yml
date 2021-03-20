@@ -6,4 +6,4 @@ services:
   networks:
     - default
   volumes: 
-    - /home/lothus/dockerfiles/python/tcav/Code:/code
+    - ./code:/code
