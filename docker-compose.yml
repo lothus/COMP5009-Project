@@ -7,3 +7,6 @@ services:
     - default
   volumes: 
     - ./Code:/code
+  ports:
+    - '8888:8888/tcp'
+  restart: unless-stopped
