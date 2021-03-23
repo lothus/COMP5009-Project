@@ -63,7 +63,7 @@ class TcavTest(googletest.TestCase):
     self.class_id = 0
     self.bottleneck = 'bn'
     self.cav_dir = None
-    self.hparams = tf.contrib.training.HParams(model_type='linear', alpha=.01)
+    self.hparams = {'model_type':'linear', 'alpha':.01}
     self.cav = CAV(self.concepts,
                        self.bottleneck,
                        self.hparams)
@@ -78,14 +78,14 @@ class TcavTest(googletest.TestCase):
                        self.concepts,
                        [self.bottleneck],
                        self.act_gen,
-                       [self.hparams.alpha])
+                       [self.hparams['alpha']])
 
     self.mytcav_random_counterpart = TCAV(None,
                                           self.target,
                                           self.concepts,
                                           [self.bottleneck],
                                           self.act_gen,
-                                          [self.hparams.alpha],
+                                          [self.hparams['alpha']],
                                           self.random_counterpart)
 
   def test_get_direction_dir_sign(self):
@@ -219,7 +219,7 @@ class TcavTest(googletest.TestCase):
                             concepts_relative,
                             [self.bottleneck],
                             self.act_gen,
-                            [self.hparams.alpha],
+                            [self.hparams['alpha']],
                             random_concepts=concepts_relative)
     self.mytcav_random_counterpart._process_what_to_run_expand(
         num_random_exp=2, random_concepts=concepts_relative)
@@ -243,7 +243,7 @@ class TcavTest(googletest.TestCase):
     self.assertEqual(params[0].target_class, 't1')
     self.assertEqual(params[0].activation_generator, self.act_gen)
     self.assertEqual(params[0].cav_dir, self.cav_dir)
-    self.assertEqual(params[0].alpha, self.hparams.alpha)
+    self.assertEqual(params[0].alpha, self.hparams['alpha'])
     self.assertEqual(params[0].model, self.mymodel)
 
 

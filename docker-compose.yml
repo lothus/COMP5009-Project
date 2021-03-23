@@ -6,4 +6,4 @@ services:
   networks:
     - default
   volumes: 
-    - ./code:/code
+    - ./Code:/code
