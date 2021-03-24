@@ -15,3 +15,8 @@ Code/tcav/tcav_examples/IMDB_Data/imdb_reviews
 Code/kddcup99_10-py3
 Code/tcav/tcav_examples/*/cats_vs_dogs
 Code/tcav/tcav_examples/*/kdd_sanity2
+*.h5
+*.pb
+*.ckpt*
+*.tflite
+*.pbtxt
