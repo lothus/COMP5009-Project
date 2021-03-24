@@ -1,9 +1,0 @@
-*.pyc
-/dist/
-/*.egg-info
-.ipynb_checkpoints/
-build/
-
-tcav/tcav_examples/image_models/imagenet/mobilenet_v2_1.0_224/*
-tcav/tcav_examples/image_models/imagenet/inception5h/*
-tcav/tcav_examples/image_models/imagenet/broden1_224/*
