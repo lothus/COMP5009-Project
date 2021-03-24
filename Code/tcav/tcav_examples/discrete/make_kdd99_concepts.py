@@ -50,7 +50,7 @@ def make_concepts_targets_and_randoms(source_dir):
       "dst_host_srv_rerror_rate", "label"
   ]
 
-  data, labels = fetch_kddcup99(return_X_y=True)
+  data, labels = fetch_kddcup99(return_X_y=True,data_home="./")
 
   # Create dataframe from the KDD dataset
   dataset_columns = {columns[i]: data[:, i] for i in range(len(data[0]))}

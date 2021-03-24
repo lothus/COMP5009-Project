@@ -123,6 +123,7 @@ def fetch_all_urls_for_concept(imagenet_dataframe, concept):
   if imagenet_dataframe["class_name"].str.contains(concept).any():
     all_images = imagenet_dataframe[imagenet_dataframe["class_name"] ==
                                     concept]["url"].values[0]
+    print(all_images)
     bytes = urllib.request.urlopen(all_images)
     all_urls = []
     for line in bytes:

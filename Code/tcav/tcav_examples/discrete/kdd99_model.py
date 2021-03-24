@@ -128,7 +128,7 @@ def prepare_dataset(labels_path):
 
   Encodes categorical variables with Ordinal Encoding
   """
-  data, labels = sklearn.datasets.fetch_kddcup99(return_X_y=True)
+  data, labels = sklearn.datasets.fetch_kddcup99(return_X_y=True,data_home="./")
   encoded_data = encode_variables(data)
   encoded_labels = encode_labels(labels, labels_path)
   return encoded_data, encoded_labels
