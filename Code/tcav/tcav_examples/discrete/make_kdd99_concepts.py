@@ -47,7 +47,7 @@ def make_concepts_targets_and_randoms(source_dir):
       "dst_host_diff_srv_rate", "dst_host_same_src_port_rate",
       "dst_host_srv_diff_host_rate", "dst_host_serror_rate",
       "dst_host_srv_serror_rate", "dst_host_rerror_rate",
-      "dst_host_srv_rerror_rate", "label"
+      "dst_host_srv_rerror_rate", "labels"
   ]
 
   data, labels = fetch_kddcup99(return_X_y=True,data_home="./")
@@ -73,14 +73,18 @@ def make_concepts_targets_and_randoms(source_dir):
   concept_more_df = dataframe[dataframe["dst_host_same_src_port_rate"] >= 1]
   concept_serror_rate_less_df = dataframe[dataframe["serror_rate"]<1]
   concept_serror_rate_more_df = dataframe[dataframe["serror_rate"]>=1]
+  concept_dst_host_count_more = dataframe[dataframe["dst_host_count"]>=1]
+  concept_dst_host_count_less = dataframe[dataframe["dst_host_count"]<0]
 
   make_concept_folder(concept_less_df,
-                      "dst_host_same_src_port_rate_less_than_one")
+                      "srcportrate_less")
   make_concept_folder(concept_more_df,
-                      "dst_host_same_src_port_rate_more_than_one")
+                      "srcportrate_more")
 
-  make_concept_folder(concept_serror_rate_less_df,"serror_rate_less_than_one")
-  make_concept_folder(concept_serror_rate_more_df,"serror_rate_more_than_one")
+  make_concept_folder(concept_serror_rate_less_df,"serror_rate_less")
+  make_concept_folder(concept_serror_rate_more_df,"serror_rate_more")
+  make_concept_folder(concept_dst_host_count_more,"host_more")
+  make_concept_folder(concept_dst_host_count_less,"host_less")
 
   # Making random_examples
   random_size = 10
@@ -95,10 +99,12 @@ def make_concepts_targets_and_randoms(source_dir):
   targets = dataframe.labels.unique()
   print("Available concepts for KDD99 dataset are: ")
   print([
-      "dst_host_same_src_port_rate_less_than_one",
-      "dst_host_same_src_port_rate_more_than_one",
-      "serror_rate_less_than_one",
-      "serror_rate_more_than_one"
+      "srcportrate_less",
+      "srcportrate_more",
+      "serror_rate_less",
+      "serror_rate_more",
+      "host_more",
+      "host_less"
   ])
   print("\n")
   print("Available targets for KDD99 dataset are: ")
