@@ -51,6 +51,8 @@ def make_concepts_targets_and_randoms(source_dir):
   ]
 
   data, labels = fetch_kddcup99(return_X_y=True,data_home="./")
+  print(data)
+  print(labels)
 
   # Create dataframe from the KDD dataset
   dataset_columns = {columns[i]: data[:, i] for i in range(len(data[0]))}
@@ -69,11 +71,16 @@ def make_concepts_targets_and_randoms(source_dir):
 
   concept_less_df = dataframe[dataframe["dst_host_same_src_port_rate"] < 1]
   concept_more_df = dataframe[dataframe["dst_host_same_src_port_rate"] >= 1]
+  concept_serror_rate_less_df = dataframe[dataframe["serror_rate"]<1]
+  concept_serror_rate_more_df = dataframe[dataframe["serror_rate"]>=1]
 
   make_concept_folder(concept_less_df,
                       "dst_host_same_src_port_rate_less_than_one")
   make_concept_folder(concept_more_df,
                       "dst_host_same_src_port_rate_more_than_one")
+
+  make_concept_folder(concept_serror_rate_less_df,"serror_rate_less_than_one")
+  make_concept_folder(concept_serror_rate_more_df,"serror_rate_more_than_one")
 
   # Making random_examples
   random_size = 10
@@ -89,7 +96,9 @@ def make_concepts_targets_and_randoms(source_dir):
   print("Available concepts for KDD99 dataset are: ")
   print([
       "dst_host_same_src_port_rate_less_than_one",
-      "dst_host_same_src_port_rate_more_than_one"
+      "dst_host_same_src_port_rate_more_than_one",
+      "serror_rate_less_than_one",
+      "serror_rate_more_than_one"
   ])
   print("\n")
   print("Available targets for KDD99 dataset are: ")
