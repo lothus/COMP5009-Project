@@ -56,8 +56,14 @@ class TCAV(object):
     # Grad points in the direction which DECREASES probability of class
     grad = np.reshape(mymodel.get_gradient(
         act, [class_id], cav.bottleneck, example), -1)
-    dot_prod = np.dot(grad, cav.get_direction(concept))
-    return dot_prod < 0
+    direction_v = cav.get_direction(concept)
+    dot_prod = np.dot(grad, direction_v)
+    cosAngle = np.linalg.norm(grad)*np.linalg.norm(direction_v)
+    # return dot_prod < 0
+    if dot_prod < 0 :
+      return dot_prod/cosAngle
+    else:
+      return 0
 
   @staticmethod
   def compute_tcav_score(mymodel,
@@ -90,19 +96,52 @@ class TCAV(object):
     class_id = mymodel.label_to_id(target_class)
     if run_parallel:
       pool = multiprocessing.Pool(num_workers)
+      #OG Code
       directions = pool.map(
-          lambda i: TCAV.get_direction_dir_sign(
-              mymodel, np.expand_dims(class_acts[i], 0),
-              cav, concept, class_id, examples[i]),
-          range(len(class_acts)))
+      #     lambda i: TCAV.get_direction_dir_sign(
+      #         mymodel, np.expand_dims(class_acts[i], 0),
+      #         cav, concept, class_id, examples[i]),
+      #     range(len(class_acts)))
+
+
+      #Cosin average
+      # directions = pool.map(
+      #     lambda i: -1 * TCAV.get_direction_dir_sign(
+      #         mymodel, np.expand_dims(class_acts[i], 0),
+      #         cav, concept, class_id, examples[i]),
+      #     range(len(class_acts))) 
+
+          # lambda i : pow(pow(np.mean(TCAV.get_directional_dir(
+          #   mymodel, target_class, concept, cav, class_acts, examples)),2),0.5),
+          #   range(len(class_acts))
+          lambda i : pow(pow(np.mean(cav.get_direction(concept)),2),0.5),
+            range(len(class_acts))
+      )
+      
       return sum(directions) / float(len(class_acts))
     else:
       for i in range(len(class_acts)):
         act = np.expand_dims(class_acts[i], 0)
         example = examples[i]
-        if TCAV.get_direction_dir_sign(
-            mymodel, act, cav, concept, class_id, example):
-          count += 1
+        #if TCAV.get_direction_dir_sign(
+         #      mymodel, act, cav, concept, class_id, example):
+        
+        #Cosin with magnitude counts
+        cosin = TCAV.get_direction_dir_sign(mymodel, act, cav, concept, class_id, example)
+        vector_d = cav.get_direction(concept)
+        count += np.linalg.norm(vector_d)*np.abs(cosin)
+        
+        #Count with 1 * each cosign divided by then averaged
+        #cosin = TCAV.get_direction_dir_sign(mymodel, act, cav, concept, class_id, example)
+        #count += -1 * cosin
+        
+        #Mean root square of cav
+        # count = np.mean(cav.get_direction(concept))
+        # count = pow(count,2)
+        # count = pow(count,0.5)
+
+        #Magnitude with direction
+          #count += np.linalg.norm(cav.get_direction(concept))
       return float(count) / float(len(class_acts))
 
   @staticmethod

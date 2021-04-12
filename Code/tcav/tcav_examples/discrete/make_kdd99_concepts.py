@@ -69,22 +69,28 @@ def make_concepts_targets_and_randoms(source_dir):
     concept_file_name = os.path.join(path, concept + ".csv")
     dataframe.to_csv(concept_file_name, index=False)
 
-  concept_less_df = dataframe[dataframe["dst_host_same_src_port_rate"] < 1]
-  concept_more_df = dataframe[dataframe["dst_host_same_src_port_rate"] >= 1]
-  concept_serror_rate_less_df = dataframe[dataframe["serror_rate"]<1]
-  concept_serror_rate_more_df = dataframe[dataframe["serror_rate"]>=1]
-  concept_dst_host_count_more = dataframe[dataframe["dst_host_count"]>=1]
-  concept_dst_host_count_less = dataframe[dataframe["dst_host_count"]<0]
+  # concept_less_df = dataframe[dataframe["dst_host_same_src_port_rate"] < 1]
+  # concept_more_df = dataframe[dataframe["dst_host_same_src_port_rate"] >= 1]
+  # concept_serror_rate_less_df = dataframe[dataframe["serror_rate"]<1]
+  # concept_serror_rate_more_df = dataframe[dataframe["serror_rate"]>=1]
+  concept_srv_count = dataframe[dataframe["srv_count"] > 0]
+  concept_root_shell = dataframe[dataframe["root_shell"]>0]
+  concept_num_compromised = dataframe[dataframe["num_compromised"]>0]
+  # concept_rerror_rate_more = dataframe[dataframe["rerror_rate"]>=1]
+  # concept_rerror_rate_less = dataframe[dataframe["rerror_rate"]<1]
 
-  make_concept_folder(concept_less_df,
-                      "srcportrate_less")
-  make_concept_folder(concept_more_df,
-                      "srcportrate_more")
+  # make_concept_folder(concept_less_df,
+  #                     "srcportrate_less")
+  # make_concept_folder(concept_more_df,
+  #                     "srcportrate_more")
 
-  make_concept_folder(concept_serror_rate_less_df,"serror_rate_less")
-  make_concept_folder(concept_serror_rate_more_df,"serror_rate_more")
-  make_concept_folder(concept_dst_host_count_more,"host_more")
-  make_concept_folder(concept_dst_host_count_less,"host_less")
+  # make_concept_folder(concept_serror_rate_less_df,"serror_rate_less")
+  # make_concept_folder(concept_serror_rate_more_df,"serror_rate_more")
+  make_concept_folder(concept_srv_count,"srv_count")
+  make_concept_folder(concept_root_shell,"root_shell")
+  make_concept_folder(concept_num_compromised,"num_comp")
+  # make_concept_folder(concept_rerror_rate_more,"rerror_rate_more")
+  # make_concept_folder(concept_rerror_rate_less,"rerror_rate_less")
 
   # Making random_examples
   random_size = 10
@@ -99,12 +105,9 @@ def make_concepts_targets_and_randoms(source_dir):
   targets = dataframe.labels.unique()
   print("Available concepts for KDD99 dataset are: ")
   print([
-      "srcportrate_less",
-      "srcportrate_more",
-      "serror_rate_less",
-      "serror_rate_more",
-      "host_more",
-      "host_less"
+      "srv_count",
+      "root_shell",
+      "num_comp"
   ])
   print("\n")
   print("Available targets for KDD99 dataset are: ")

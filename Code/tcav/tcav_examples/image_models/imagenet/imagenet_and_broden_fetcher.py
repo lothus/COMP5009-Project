@@ -49,7 +49,7 @@ import tensorflow as tf
 import socket
 import random
 
-kImagenetBaseUrl = "http://imagenet.stanford.edu/api/text/imagenet.synset.geturls?wnid="
+kImagenetBaseUrl = " http://www.image-net.org/download/synset?username=lothus&accesskey=05afc58ace1dc5ca69ffb306f49fca297e0187b0&release=latest&src=stanford&wnid=" #username=lothus&accesskey=05afc58ace1dc5ca69ffb306f49fca297e0187b0&wnid=" #username=lothus&accesskey=05afc58ace1dc5ca69ffb306f49fca297e0187b0&
 kBrodenTexturesPath = "broden1_224/images/dtd/"
 kMinFileSize = 10000
 
@@ -87,7 +87,9 @@ def download_image(path, url):
   image_name = image_name.split("?")[0]
   image_prefix = image_name.split(".")[0]
   saving_path = os.path.join(path, image_prefix + ".jpg")
-  urllib.request.urlretrieve(url, saving_path)
+  #urllib.request.urlretrieve(url, saving_path)
+  image = Image.open(url)
+  image.save(saving_path)
 
   try:
     # Throw an exception if the image is unreadable or corrupted
@@ -123,7 +125,8 @@ def fetch_all_urls_for_concept(imagenet_dataframe, concept):
   if imagenet_dataframe["class_name"].str.contains(concept).any():
     all_images = imagenet_dataframe[imagenet_dataframe["class_name"] ==
                                     concept]["url"].values[0]
-    print(all_images)
+    print("Image Prints {0}".format(all_images))
+    
     bytes = urllib.request.urlopen(all_images)
     all_urls = []
     for line in bytes:
@@ -167,7 +170,7 @@ def fetch_imagenet_class(path, class_name, number_of_images, imagenet_dataframe)
   tf.compat.v1.logging.info("Saving images at " + concept_path)
 
   # Check to see if this class name exists. Fetch all urls if so.
-  all_images = fetch_all_urls_for_concept(imagenet_dataframe, class_name)
+  all_images = absoluteFilePaths("./zebra_all") #fetch_all_urls_for_concept(imagenet_dataframe, class_name)
 
   # Fetch number_of_images images or as many as you can.
   num_downloaded = 0
@@ -192,7 +195,10 @@ def fetch_imagenet_class(path, class_name, number_of_images, imagenet_dataframe)
   else:
     print("Downloaded " + str(number_of_images) + " for " + class_name)
 
-
+def absoluteFilePaths(directory):
+    for dirpath,_,filenames in os.walk(directory):
+        for f in filenames:
+            yield os.path.abspath(os.path.join(dirpath, f))
 """Moves all textures in a downloaded Broden to our working folder.
 
 Assumes that you manually downloaded the broden dataset to broden_path.
@@ -282,7 +288,7 @@ def generate_random_folders(working_directory, random_folder_prefix,
     examples_selected = 0
     while examples_selected < number_of_examples_per_folder:
       random_concept = random.choice(imagenet_concepts)
-      urls = fetch_all_urls_for_concept(imagenet_dataframe, random_concept)
+      urls = fetch_all_urls_for_concept(imagenet_dataframe, random_concept) #absoluteFilePaths("")
       for url in urls:
         # We are filtering out images from Flickr urls, since several of those were removed
         if "flickr" not in url:
@@ -295,4 +301,4 @@ def generate_random_folders(working_directory, random_folder_prefix,
                               partition_name)
             break  # Break if we successfully downloaded an image
           except:
-              pass # try new url
+              pass # try new url 

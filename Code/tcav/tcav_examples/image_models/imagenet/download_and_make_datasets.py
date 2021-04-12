@@ -29,7 +29,7 @@ limitations under the License.
         - Creates random folders with examples from Imagenet. Those are used by TCAV.
 
     Example usage:
-
+    
     python download_and_make_datasets.py --source_dir=YOUR_FOLDER --number_of_images_per_folder=50 --number_of_random_folders=10
 """
 import subprocess
@@ -52,8 +52,8 @@ def make_concepts_targets_and_randoms(source_dir, number_of_images_per_folder, n
     # make targets from imagenet
     imagenet_dataframe = fetcher.make_imagenet_dataframe("./imagenet_url_map.csv")
     for image in imagenet_classes:
-        fetcher.fetch_imagenet_class(source_dir, image, number_of_images_per_folder, imagenet_dataframe)
-
+       fetcher.fetch_imagenet_class(source_dir, image, number_of_images_per_folder, imagenet_dataframe)
+        
     # Make concepts from broden
     for concept in broden_concepts:
         fetcher.download_texture_to_working_folder(broden_path=os.path.join(source_dir, 'broden1_224'),
